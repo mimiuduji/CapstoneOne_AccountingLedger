@@ -1,32 +1,39 @@
 package com.ps;
 
-import java. time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
+import java.time.LocalDateTime;
 
 public class Transaction {
-    private String date;
-    private String time;
+    private LocalDateTime dateTime;
     private String description;
-    private String vendor;
     private double amount;
+    private String vendor;
 
-    // Constructor
-    public Transaction(String description, String vendor, double amount) {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-
-        this.date = now.format(dateFormatter);
-        this.date = now.format(dateFormatter);
+    public Transaction(LocalDateTime dateTime, String description, double amount, String vendor) {
+        this.dateTime = dateTime;
         this.description = description;
-        this.vendor = vendor;
         this.amount = amount;
+        this.vendor = vendor;
     }
 
-    // Getter method for formatting transaction details for the CSV file
-    public String getTransactionDetails() {
-        return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
+    // Getters
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    @Override
+    public String toString() {
+        return dateTime + " | " + description + " | " + vendor + " | " + amount;
     }
 }

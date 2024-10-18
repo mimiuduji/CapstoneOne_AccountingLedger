@@ -4,51 +4,39 @@ import java.util.Scanner;
 
 public class AccountingLedgerApp {
 
-    public static void main (String[] args){
-        // Start application showing the home screen menu
-        showMenu();
-    }
-
-        // The method to display home screen menu
-    public static void showMenu() {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String choice = "";
+        boolean running = true;
 
-        // Keep showing the menu until the user decides to exit
-        while (!choice.equalsIgnoreCase("X")) {
-        System.out.println("Welcome to the Accounting Ledger Application!");
-        System.out.println("Please choose an option:");
-        System.out.println("D) Add Deposit");
-        System.out.println("P) Make Payment");
-        System.out.println("L) Ledger");
-        System.out.println("X) Exit");
+        while (running) {
+            System.out.println("Accounting Ledger Menu");
+            System.out.println("D) Add Deposit");
+            System.out.println("P) Make Payment");
+            System.out.println("L) View Ledger");
+            System.out.println("X) Exit");
 
-        // Get the user's choice
-        System.out.print("Enter your choice");
-        choice = scanner.nextLine();
+            System.out.print("Choose an option: ");
+            String choice = scanner.nextLine().toUpperCase();
 
-        // Handle the user's choice
-         switch (choice.toUpperCase()) {
-             case "D":
-            System.out.println("You chose to Add Deposit");
-            // Call a method to add deposit here
-              break;
-             case "P":
-                 System.out.println("You chose to make payment.");
-                 // call a method to display ledger here
-                 break;
-             case "L":
-                 System.out.println("You chose to view the Ledger.");
-                 // call a method to display ledger here
-                 break;
-             case "X":
-                 System.out.println("Exiting the application. Goodbye!");
-                 break;
-             default:
-                 System.out.println("Invalid choice. Please choose a valid option.");
-
-         }
+            switch (choice) {
+                case "D":
+                    // Call method to add a deposit
+                    break;
+                case "P":
+                    // Call method to make a payment
+                    break;
+                case "L":
+                    // Call method to view ledger
+                    break;
+                case "X":
+                    System.out.println("Exiting application.");
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
         }
+
         scanner.close();
     }
 }
