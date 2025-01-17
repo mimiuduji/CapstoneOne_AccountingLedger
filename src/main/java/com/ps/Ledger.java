@@ -34,16 +34,14 @@ public class Ledger {
 
     // Display only deposits (positive transactions)
     public void displayDeposits() {
-        boolean found = false;
-        System.out.println("Deposits:");
-        for (Transaction transaction : transactions) {
-            if (transaction.getAmount() > 0) {
+
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions available.");
+        } else {
+            System.out.println("All Transactions:");
+            for (Transaction transaction : transactions) {
                 System.out.println(transaction);
-                found = true;
             }
-        }
-        if (!found) {
-            System.out.println("No deposits available.");
         }
     }
 

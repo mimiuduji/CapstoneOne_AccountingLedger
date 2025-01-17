@@ -1,3 +1,6 @@
-2024-10-16|null|Paycheck|Employer|1500.0
+date|time|description|amount|vendor
 
-2025-01-17|10:40:50|222222|203.00|cake
+2025-01-17|12:29:35|Paycheck|1000.00|Work
+2025-01-17|12:30:13|Car bill|-470.00|Finance Services
+2025-01-17|12:37:41|paycheck|1000.00|work
+2025-01-17|12:38:17|car note|-500.00|car place

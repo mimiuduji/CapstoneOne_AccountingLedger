@@ -7,6 +7,9 @@ public class AccountingLedgerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        TransactionManager.readTransactions();
+
+
         int choice;
 
         do{

@@ -1,6 +1,8 @@
 package com.ps;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,31 @@ public class TransactionManager {
     static private ArrayList<Transaction> transactions = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
 
+    public static void readTransactions() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("transactions.csv"));
+
+            // Read the header line (not used)
+            String firstLine = br.readLine();
+            String input;
+
+            // Read each line of the CSV file
+            while ((input = br.readLine()) != null) {
+                String[] transactionArr = input.split("\\|");
+                String date = transactionArr[0];
+                String time = transactionArr[1];
+                String description = transactionArr[2];
+                double amount = Double.parseDouble(transactionArr[3]);
+                String vendor = transactionArr[4];
+
+                // Add a new Transaction object to the list
+                transactions.add(new Transaction(date, time, description, amount, vendor));
+            }
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exceptions during file reading
+        }
+    }
     // Add a deposit
     public static void addDeposit() {
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -86,69 +113,93 @@ public class TransactionManager {
 
     // Show ledger
     public static void showLedger() {
-        String option;
+        int option;
 
         do {
             System.out.println("=== Ledger Screen ===");
-            System.out.println("A) All");
-            System.out.println("D) Deposits");
-            System.out.println("P) Payments");
-            System.out.println("R) Reports");
-            System.out.println("H) Home");
+            System.out.println("1) All");
+            System.out.println("2) Deposits");
+            System.out.println("3) Payments");
+            System.out.println("4) Reports");
+            System.out.println("0) Home");
 
             System.out.print("Choose an option: ");
-            option = scanner.nextLine().toUpperCase();
+            option = scanner.nextInt();
+            scanner.nextLine();
 
             switch (option) {
-                case "A":
+                case 1:
                     showAllTransactions();
                     break;
-                case "D":
+                case 2:
                     showDeposits();
                     break;
-                case "P":
+                case 3:
                     showPayments();
                     break;
-                case "R":
-                    // You can implement reports screen later
-                    System.out.println("Reports not implemented yet.");
+                case 4:
+//                    reports();
                     break;
-                case "H":
+                case 0:
                     System.out.println("Returning to home screen...");
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
 
-        } while (!option.equals("H"));
+        } while (true);
     }
 
     // Show all transactions
     private static void showAllTransactions() {
         System.out.println("=== All Transactions ===");
-        for (Transaction t : transactions) {
-            System.out.println(t);
+        for (int i = transactions.size()-1; i >= 0; i--){
+           Transaction transaction = transactions.get(i);
+
+           System.out.printf("Date: %s, Time: %s, Description: %s, Amount: $%.2f, Vendor: %s\n",
+                   transaction.getDate(),
+                   transaction.getTime(),
+                   transaction.getDescription(),
+                   transaction.getAmount(),
+                   transaction.getVendor());
         }
     }
 
     // Show deposits
     private static void showDeposits() {
         System.out.println("=== Deposits ===");
-        for (Transaction t : transactions) {
-            if (t.getAmount() > 0) {
-                System.out.println(t);
+        for (int i = transactions.size()-1; i >= 0; i--){
+            Transaction transaction = transactions.get(i);
+            if (transaction.getAmount()>0){
+                System.out.println(transaction);
             }
+
+            System.out.printf("Date: %s, Time: %s, Description: %s, Amount: $%.2f, Vendor: %s\n",
+                    transaction.getDate(),
+                    transaction.getTime(),
+                    transaction.getDescription(),
+                    transaction.getAmount(),
+                    transaction.getVendor());
         }
     }
 
     // Show payments
     private static void showPayments() {
         System.out.println("=== Payments ===");
-        for (Transaction t : transactions) {
-            if (t.getAmount() < 0) {
-                System.out.println(t);
+        for (int i = transactions.size()-1; i >= 0; i--){
+            Transaction transaction = transactions.get(i);
+            if (transaction.getAmount()>0){
+                System.out.println(transaction);
             }
+
+            System.out.printf("Date: %s, Time: %s, Description: %s, Amount: $%.2f, Vendor: %s\n",
+                    transaction.getDate(),
+                    transaction.getTime(),
+                    transaction.getDescription(),
+                    transaction.getAmount(),
+                    transaction.getVendor());
         }
     }
 }
+
 
