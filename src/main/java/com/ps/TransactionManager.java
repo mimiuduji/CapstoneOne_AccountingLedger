@@ -1,15 +1,24 @@
 package com.ps;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TransactionManager {
 
-    private ArrayList<Transaction> transactions = new ArrayList<>();
+    static private ArrayList<Transaction> transactions = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
 
     // Add a deposit
-    public void addDeposit(Scanner scanner) {
+    public static void addDeposit() {
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
         System.out.println("Enter description of the deposit:");
         String description = scanner.nextLine();
 
@@ -20,31 +29,63 @@ public class TransactionManager {
         System.out.println("Enter vendor:");
         String vendor = scanner.nextLine();
 
-        Transaction deposit = new Transaction(LocalDateTime.now(), description, amount, vendor);
+        Transaction deposit = new Transaction(date, time, description, amount, vendor);
         transactions.add(deposit);
         System.out.println("Deposit added.");
+
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+            bufferedWriter.write(String.format("\n%s|%s|%s|%.2f|%s",
+                    deposit.getDate(),
+                    deposit.getTime(),
+                    deposit.getDescription(),
+                    deposit.getAmount(),
+                    deposit.getVendor()));
+
+            bufferedWriter.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     // Make a payment
-    public void makePayment(Scanner scanner) {
+    public static void makePayment() {
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
         System.out.println("Enter description of the payment:");
         String description = scanner.nextLine();
 
         System.out.println("Enter payment amount:");
         double amount = scanner.nextDouble();
         scanner.nextLine();  // Consume the newline
+        amount *= -1;
 
         System.out.println("Enter vendor:");
         String vendor = scanner.nextLine();
 
 
-        Transaction payment = new Transaction(LocalDateTime.now(), description, amount, vendor);
+        Transaction payment = new Transaction(date, time, description, amount, vendor);
         transactions.add(payment);
         System.out.println("Payment made.");
+
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+            bufferedWriter.write(String.format("\n%s|%s|%s|%.2f|%s",
+                    payment.getDate(),
+                    payment.getTime(),
+                    payment.getDescription(),
+                    payment.getAmount(),
+                    payment.getVendor()));
+
+            bufferedWriter.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     // Show ledger
-    public void showLedger(Scanner scanner) {
+    public static void showLedger() {
         String option;
 
         do {
@@ -83,7 +124,7 @@ public class TransactionManager {
     }
 
     // Show all transactions
-    private void showAllTransactions() {
+    private static void showAllTransactions() {
         System.out.println("=== All Transactions ===");
         for (Transaction t : transactions) {
             System.out.println(t);
@@ -91,7 +132,7 @@ public class TransactionManager {
     }
 
     // Show deposits
-    private void showDeposits() {
+    private static void showDeposits() {
         System.out.println("=== Deposits ===");
         for (Transaction t : transactions) {
             if (t.getAmount() > 0) {
@@ -101,7 +142,7 @@ public class TransactionManager {
     }
 
     // Show payments
-    private void showPayments() {
+    private static void showPayments() {
         System.out.println("=== Payments ===");
         for (Transaction t : transactions) {
             if (t.getAmount() < 0) {

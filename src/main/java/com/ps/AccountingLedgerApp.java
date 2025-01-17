@@ -6,37 +6,39 @@ public class AccountingLedgerApp {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        boolean running = true;
 
-        while (running) {
+        int choice;
+
+        do{
             System.out.println("Accounting Ledger Menu");
-            System.out.println("D) Add Deposit");
-            System.out.println("P) Make Payment");
-            System.out.println("L) View Ledger");
-            System.out.println("X) Exit");
+            System.out.println("1) Add Deposit");
+            System.out.println("2) Make Payment");
+            System.out.println("3) View Ledger");
+            System.out.println("0) Exit");
 
             System.out.print("Choose an option: ");
-            String choice = scanner.nextLine().toUpperCase();
+
+             choice = scanner.nextInt();
+             scanner.nextLine();
 
             switch (choice) {
-                case "D":
-                    // Call method to add a deposit
+                case 1:
+                    TransactionManager.addDeposit();
                     break;
-                case "P":
-                    // Call method to make a payment
+                case 2:
+                    TransactionManager.makePayment();
                     break;
-                case "L":
-                    // Call method to view ledger
+                case 3:
+                    TransactionManager.showLedger();
                     break;
-                case "X":
+                case 0:
                     System.out.println("Exiting application.");
-                    running = false;
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        }
+        } while (true);
 
-        scanner.close();
     }
 }
